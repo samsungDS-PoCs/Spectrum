@@ -66,11 +66,11 @@ This project contains code under multiple licenses:
 
 1. **excluding spectrum/**:
    - Based on [Geoformer](https://github.com/microsoft/AI2BMD/tree/Geoformer), [PaiNN](https://github.com/facebookresearch/fairchem/blob/977a80328f2be44649b414a9907a1d6ef2f81e95/src/fairchem/core/models/painn/painn.py), and [Equiformer](https://github.com/atomicarchitects/equiformer).
-   - Licensed under the **MIT License**. See [LICENSE-MIT.txt](https://github.samsungds.net/hasup-lee/Spectrum/blob/main/LICENSE-MIT.txt) for the full terms.
+   - Licensed under the **MIT License**. See [LICENSE-MIT.txt](https://github.com/samsungDS-PoCs/Spectrum/blob/main/LICENSE-MIT.txt) for the full terms.
 
 2. **spectrum/**:
    - License under **CC BY-NC-SA 4.0**.
-   - See [LICENSE-CCBYNCSA.txt](https://github.samsungds.net/hasup-lee/Spectrum/blob/main/LICENSE-CCBYNCSA.txt) for details and contact information.
+   - See [LICENSE-CCBYNCSA.txt](https://github.com/samsungDS-PoCs/Spectrum/blob/main/LICENSE-CCBYNCSA.txt) for details and contact information.
 
 ## Acknowledgements
 This work builds upon the following models:
