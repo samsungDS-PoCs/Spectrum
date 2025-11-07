@@ -58,7 +58,7 @@ Python utilities for spectrum metrics are located in scripts/:
 
 ## Contact
 
-Please contact <A href="hasup.lee@samsung.com">Hasup Lee</A> for technical support.
+Please contact Hasup Lee for technical support. (hasup.lee@samsung.com)
 
 ## License
 
