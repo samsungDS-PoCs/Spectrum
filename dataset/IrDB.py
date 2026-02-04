@@ -113,7 +113,7 @@ class IrDB_org(InMemoryDataset):
         from rdkit.Chem.rdchem import BondType as BT
         from rdkit.Chem.rdchem import HybridizationType
 
-        atom_types = {'C': 0, 'N': 1, 'O': 2, 'F': 3, 'S': 4, 'Cl': 5, 'Br': 6, 'Ir': 7}
+        atom_types = {'C': 0, 'N': 1, 'O': 2, 'F': 3, 'S': 4, 'Cl': 5, 'Br': 6, 'Ir': 7, 'Si':8, 'Pt':9}
         bonds = {BT.SINGLE: 0, BT.DOUBLE: 1, BT.TRIPLE: 2, BT.AROMATIC: 3}
 
         with open(self.raw_paths[1]) as f:
@@ -261,4 +261,10 @@ class IrDB(IrDB_org):
         else:
             raise ValueError(f"Unsupported shape {batch.y[:,self.label_idx]}")
         return batch
+
+class PtDB(IrDB):
+    @property
+    def raw_file_names(self) -> List[str]:
+        import rdkit  # noqa
+        return ['PtDB.sdf', 'PtDB.sdf.csv']
 
