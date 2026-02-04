@@ -16,6 +16,7 @@ from torch_geometric.data import (
 from torch_geometric.io import fs
 import torch.nn.functional as F
 from torch_geometric.utils import one_hot, scatter
+import gzip
 
 spectrum_target_dict = {
     0: 'A2',
@@ -116,13 +117,24 @@ class IrDB_org(InMemoryDataset):
         atom_types = {'C': 0, 'N': 1, 'O': 2, 'F': 3, 'S': 4, 'Cl': 5, 'Br': 6, 'Ir': 7, 'Si':8, 'Pt':9}
         bonds = {BT.SINGLE: 0, BT.DOUBLE: 1, BT.TRIPLE: 2, BT.AROMATIC: 3}
 
-        with open(self.raw_paths[1]) as f:
-            target = [[float(x) for x in line.split(',')[1:-3]]
-                      for line in f.read().split('\n')[1:-1]]
-            y = torch.tensor(target, dtype=torch.float)
+        if self.raw_paths[1].endswith('.csv'):
+            with open(self.raw_paths[1], 'r') as f:
+                target = [[float(x) for x in line.split(',')[1:-3]]
+                          for line in f.read().split('\n')[1:-1]]
+                y = torch.tensor(target, dtype=torch.float)
 
-        with open(self.raw_paths[1]) as f:
-            spec = [[line.split(',')[-3],line.split(',')[-2]] for line in f.read().split('\n')[1:-1]]
+            with open(self.raw_paths[1], 'r') as f:
+                spec = [[line.split(',')[-3],line.split(',')[-2]] for line in f.read().split('\n')[1:-1]]
+        elif self.raw_paths[1].endswith('.csv.gz'):
+            with gzip.open(self.raw_paths[1], 'rt') as f:
+                target = [[float(x) for x in line.split(',')[1:-3]]
+                          for line in f.read().split('\n')[1:-1]]
+                y = torch.tensor(target, dtype=torch.float)
+
+            with gzip.open(self.raw_paths[1], 'rt') as f:
+                spec = [[line.split(',')[-3],line.split(',')[-2]] for line in f.read().split('\n')[1:-1]]
+        else:
+            raise Exception(f"Unsupported file type: {self.raw_paths[1]}, only support .csv and .csv.gz")
 
         suppl = Chem.SDMolSupplier(self.raw_paths[0], removeHs=True,
                                    sanitize=False)
@@ -266,5 +278,5 @@ class PtDB(IrDB):
     @property
     def raw_file_names(self) -> List[str]:
         import rdkit  # noqa
-        return ['PtDB.sdf', 'PtDB.sdf.csv']
+        return ['PtDB.sdf', 'PtDB.sdf.csv.gz']
 
