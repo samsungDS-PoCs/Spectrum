@@ -6,7 +6,7 @@ from pytorch_lightning.utilities import rank_zero_only, rank_zero_warn
 from torch.utils.data import DataLoader, Subset
 from tqdm import tqdm
 
-from dataset.IrDB import IrDB
+from dataset.IrDB import IrDB, PtDB
 from geoformer.model.collating_geoformer import GeoformerDataCollator
 from geoformer.utils import MissingLabelException, make_splits
 
@@ -135,10 +135,18 @@ class DataModule(LightningDataModule):
         self._std = ys.std(dim=0)
 
     def _prepare_IrDB_dataset(self):
-        self.dataset = IrDB(
-            root=self.hparams["dataset_root"],
-            dataset_arg=self.hparams["dataset_arg"],
-        )
+        if self.hparams["dataset_root"].startswith('IrDB'):
+            self.dataset = IrDB(
+                root=self.hparams["dataset_root"],
+                dataset_arg=self.hparams["dataset_arg"],
+            )
+        elif self.hparams["dataset_root"].startswith('PtDB'):
+            self.dataset = PtDB(
+                root=self.hparams["dataset_root"],
+                dataset_arg=self.hparams["dataset_arg"],
+            )
+        else:
+            raise Exception("data_path must be start 'IrDB' or 'PtDB'")
         idx_train, idx_val, idx_test = make_splits(
             len(self.dataset),
             self.hparams["train_size"],

@@ -30,7 +30,7 @@ def spectrum_gmm(shape_x, a2, a3, b1, b2, b3, c1, c2, c3):
     y = y / (ymax+eps)
     return y
 
-def gmm_loss(shape_x, shape_y, params, loss_type='MAE'):
+def gmm_loss(shape_x, shape_y, params, loss_type='MAE', line_shape='none', beta='none'):
     a2, a3 = (params[:, 0:1], params[:, 1:2])
     b1, b2, b3 = (params[:, 2:3], params[:, 3:4], params[:, 4:5])
     c1, c2, c3 = (params[:, 5:6], params[:, 6:7], params[:, 7:8])

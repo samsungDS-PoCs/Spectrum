@@ -1,5 +1,8 @@
 import argparse
 import os
+base_models = ["Geoformer", "PaiNN", "Equiformer"]
+spectrum_types = ["Naive", "GMM", "FC"]
+data_path_list = ['IrDB', 'IrDB_uff', 'IrDB_murcko', 'PtDB']
 
 def get_args():
     parser = argparse.ArgumentParser(description="Spectrum prediction based on physics-informed neural network")
@@ -7,7 +10,7 @@ def get_args():
         "--spectrum-type",
         type=str,
         default='FC',
-        choices=["Naive", "GMM", "FC"],
+        choices=spectrum_types,
         help="FC: Spectrum prediction based on Franck-Condon progression. GMM: Spectrum prediction based on Gaussian Mixture-Model Naive: Not consider Spectrum Loss.",
     )
 
@@ -15,7 +18,7 @@ def get_args():
         "--base-model",
         type=str,
         default=None,
-        choices=["Geoformer", "PaiNN", "Equiformer"],
+        choices=base_models,
     )
 
     parser.add_argument(
@@ -24,17 +27,21 @@ def get_args():
         default=16,
     )
 
-    return parser.parse_args()
+    parser.add_argument(
+        "--data-path",
+        type=str,
+        default='IrDB',
+        choices=data_path_list,
+    )
 
-base_models = ["Geoformer", "PaiNN", "Equiformer"]
-spectrum_types = ["Naive", "GMM", "FC"]
+    return parser.parse_args()
 
 def main():
     i_seed = 0
     i_fold = 0
     args = get_args()
     if args.base_model == None or args.spectrum_type == None:
-        print ("python train.py --base-model {Geoformer|PaiNN|Equiformer} [--spectrum-type {Naive|GMM|FC} (default:FC)] [--batch-size <int> (default:16)]")
+        print ("python train.py --base-model {Geoformer|PaiNN|Equiformer} [--spectrum-type {Naive|GMM|FC} (default:FC)] [--batch-size <int> (default:16)] [--data-path {IrDB|IrDB_uff|IrDB_murcko|PtDB} (default:IrDB)]")
         print ("Please select base-model from Geoformer, PaiNN, or Equiformer")
         print ("Please select spectrum-type from Naive, GMM, or FC")
         return
@@ -46,15 +53,23 @@ def main():
         raise Exception("Undefined spectrum_type. Please select one from Naive, GMM, or FC.")
 
     train_file = f'train_{args.base_model}'
-    split_npz = f'IrDB/raw/CV811/splits.{i_seed}.{i_fold}.npz'
     log_path = f'results_{args.base_model}/{i_seed}/{i_fold}'
+    if args.data_path in ['IrDB', 'IrDB_uff']:
+        split_npz = f'{args.data_path}/raw/CV811/splits.{i_seed}.{i_fold}.npz'
+    elif args.data_path == 'IrDB_murcko':
+        split_npz = f'{args.data_path}/raw/CV_murcko/splits.{i_seed}.{i_fold}.npz'
+    elif args.data_path == 'PtDB':
+        split_npz = f'{args.data_path}/raw/CV_10fold/splits.{i_seed}.{i_fold}.npz'
+    
+    if not os.path.exists(split_npz):
+        raise Exception(f"{split_npz} file is not exist. Please check the i_seed and i_fold")
     
     if args.base_model == 'Geoformer':
-        cmd_line = f'python -m train_Geoformer --conf geoformer/examples/{args.spectrum_type}.yml --log-dir {log_path} --seed {i_seed} --splits {split_npz} --batch-size {batch_size}'
+        cmd_line = f'python -m train_Geoformer --conf geoformer/examples/{args.spectrum_type}.yml --log-dir {log_path} --seed {i_seed} --splits {split_npz} --batch-size {batch_size} --dataset-root {args.data_path}'
     elif args.base_model == 'PaiNN':
-        cmd_line = f'python -m train_PaiNN --spectrum-type {args.spectrum_type} --output-dir {log_path} --split-index-npz {split_npz} --seed {i_seed} --batch-size {batch_size}'
+        cmd_line = f'python -m train_PaiNN --spectrum-type {args.spectrum_type} --output-dir {log_path} --split-index-npz {split_npz} --seed {i_seed} --batch-size {batch_size} --data-path {args.data_path}'
     elif args.base_model == 'Equiformer':
-        cmd_line = f'python -m train_Equiformer --spectrum-type {args.spectrum_type} --output-dir {log_path} --split-index-npz {split_npz} --seed {i_seed} --batch-size {batch_size}'
+        cmd_line = f'python -m train_Equiformer --spectrum-type {args.spectrum_type} --output-dir {log_path} --split-index-npz {split_npz} --seed {i_seed} --batch-size {batch_size} --data-path {args.data_path}'
     
     # os.system(f'phd run -p mai_small_gpu -ng 1 -GR "name==H100" -- {cmd_line}')
     os.system(f'{cmd_line}')

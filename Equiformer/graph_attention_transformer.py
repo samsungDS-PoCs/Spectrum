@@ -29,13 +29,13 @@ from Equiformer.radial_basis import RadialBasis
 _RESCALE = True
 _USE_BIAS = True
 
-# IrDB
-_MAX_ATOM_TYPE = 8
+# IrDB & PtDB
+_MAX_ATOM_TYPE = 10
 # Statistics of QM9 with cutoff radius = 5
 _AVG_NUM_NODES = 18.03065905448718
 _AVG_DEGREE = 15.57930850982666
-max_natm = 77
-atoms = {6:0,7:1,8:2,9:3,16:4,17:5,35:6,77:7}
+max_natm = 78
+atoms = {6:0,7:1,8:2,9:3,16:4,17:5,35:6,77:7,14:8,78:9}
 lookup_table = [atoms[i] if i in atoms else -1 for i in range(max_natm+1)]
   
 

@@ -61,7 +61,7 @@ def train_one_step(model: torch.nn.Module, criterion: torch.nn.Module,
         pred = model(f_in=data.x, pos=data.pos, batch=data.batch, 
             node_atom=data.z,
             edge_d_index=data.edge_d_index, edge_d_attr=data.edge_d_attr)
-        pred = pred.squeeze()
+        pred = pred.view(pred.shape[0], -1)
         pred = pred*task_std + task_mean #unnormalization
         if spec_type == 'Naive':
             loss = criterion(pred, data.y)
@@ -123,7 +123,7 @@ def evaluate(model, norm_factor, data_loader, device, print_freq=100,
             pred = model(f_in=data.x, pos=data.pos, batch=data.batch, 
                 node_atom=data.z,
                 edge_d_index=data.edge_d_index, edge_d_attr=data.edge_d_attr)
-            pred = pred.squeeze()
+            pred = pred.view(pred.shape[0], -1)
             pred = pred*task_std + task_mean #unnormalization
 
             id_buffer.append(data['name'])
