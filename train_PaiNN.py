@@ -18,7 +18,7 @@ from pathlib import Path
 from contextlib import suppress
 from timm.utils import NativeScaler
 
-from dataset.IrDB import IrDB
+from dataset.IrDB import IrDB, PtDB
 from optim_factory import create_optimizer
 from logger import FileLogger
 
@@ -209,7 +209,13 @@ def main(args):
     np.random.seed(args.seed)
     
     ''' Dataset '''
-    dataset = IrDB(root=args.data_path, dataset_arg=args.targets)
+    if args.data_path.startswith('IrDB'):
+        dataset = IrDB(root=args.data_path, dataset_arg=args.targets)
+    elif args.data_path.startswith('PtDB'):
+        dataset = PtDB(root=args.data_path, dataset_arg=args.targets)
+    else:
+        raise Exception("data_path must be start 'IrDB' or 'PtDB'")
+
     idx_train, idx_val, idx_test = load_split_from_npz(args.split_index_npz)
     train_dataset = dataset[idx_train]
     val_dataset = dataset[idx_val]
