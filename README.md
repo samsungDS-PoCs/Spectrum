@@ -31,7 +31,7 @@ pip install e3nn==0.5.1 torch_geometric==2.6.1 transformers==4.56.0 \
 To train for spectrum prediction, just run:
 
 ```shell
-python train.py --base-model {Geoformer|PaiNN|Equiformer} [--spectrum-type {Naive|GMM|FC} (default: FC)] [--batch-size <int> (default: 16)]
+python train.py --base-model {Geoformer|PaiNN|Equiformer} [--spectrum-type {Naive|GMM|FC} (default: FC)] [--batch-size <int> (default: 16)] [--data-path {IrDB|PtDB|IrDB_uff|IrDB_murcko} (default: IrDB)]
 ```
 #### model 
  - Geoformer
