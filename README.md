@@ -55,6 +55,7 @@ Python utilities for spectrum metrics are located in scripts/:
  - calc_peak_fwhm.py: Peak position (Peak), Full Width at Half Maximum (FWHM), PL center, Full Width at Quarter Maximum (FWQM)
  - calc_ITPL_center.py: Intensity-Threshold PL center (IPTL center)
  - calc_FWXM.py: Generalized width at X% of maximum (FWXM) for Intensity-Threshold
+ - clustering_murcko.py: Grouping based on Murcko scaffold
 
 ## Contact
 
