@@ -73,6 +73,14 @@ This project contains code under multiple licenses:
    - License under **CC BY-NC-SA 4.0**.
    - See [LICENSE-CCBYNCSA.txt](https://github.com/samsungDS-PoCs/Spectrum/blob/main/LICENSE-CCBYNCSA.txt) for details and contact information.
 
+## Citation
+
+If you use this code or data in your research, please cite our paper:
+
+Lee, H. *et al.*  
+Physics-informed machine learning for spectrum prediction in phosphorescent OLEDs.  
+*npj Comput Mater* (2026). [https://doi.org/10.1038/s41524-026-02078-x](https://doi.org/10.1038/s41524-026-02078-x)
+
 ## Acknowledgements
 This work builds upon the following models:
 
