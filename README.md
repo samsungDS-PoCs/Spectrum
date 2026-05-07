@@ -77,8 +77,7 @@ This project contains code under multiple licenses:
 
 If you use this code or data in your research, please cite our paper:
 
-Lee, H. *et al.*  
-Physics-informed machine learning for spectrum prediction in phosphorescent OLEDs.  
+Lee, H. *et al.* Physics-informed machine learning for spectrum prediction in phosphorescent OLEDs.  
 *npj Comput Mater* (2026). [https://doi.org/10.1038/s41524-026-02078-x](https://doi.org/10.1038/s41524-026-02078-x)
 
 ## Acknowledgements
